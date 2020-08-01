@@ -3,7 +3,6 @@ package cryptofunctions
 import (
   "math"
   "encoding/binary"
-  "fmt"
 )
 
 func Hex_to_b64(hex string) string {
@@ -17,8 +16,8 @@ func Hex_to_b64(hex string) string {
 func bytes_to_b64(byte_arr []byte) string {
 
 //  var add_bytes = []byte{0, 0}
-//  var orig_byte_arr_len = len(byte_arr)
-//  var tribyte_div_length = orig_byte_arr_len - (orig_byte_arr_len % 3)
+  var orig_byte_arr_len = len(byte_arr)
+  var tribyte_div_length = orig_byte_arr_len - (orig_byte_arr_len % 3)
 
 //  byte_arr = append(byte_arr, add_bytes[0:tribyte_div_length+3-orig_byte_arr_len]...)
 
@@ -28,13 +27,18 @@ func bytes_to_b64(byte_arr []byte) string {
   for count < len(byte_arr) {
 
     var tmp = make([]byte, 3)
+
     copy(tmp, byte_arr[count:count+3])
 
     var tribyte = binary.BigEndian.Uint32(append([]byte{0}, tmp...))
 
+    if count+3 > tribyte_div_length {
+      tmp = tmp[:orig_byte_arr_len-tribyte_div_length]
+    }
+
     var quadcount = 3
 
-    for quadcount >= 0 {
+    for quadcount >= 3-len(tmp) {
       var sixbit = byte((tribyte >> (quadcount * 6)) & 0x3f)
 
       var result_char byte
@@ -57,6 +61,11 @@ func bytes_to_b64(byte_arr []byte) string {
     }
     count += 3
   }
+
+  /*
+    Appending equals signs  to base 64
+  */
+  res_b64 = append(res_b64, []byte{'=','='}[:(tribyte_div_length+3-orig_byte_arr_len) % 3]...)
 
   return string(res_b64)
 }
