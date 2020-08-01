@@ -100,6 +100,37 @@ func HexToByte(hex string) byte {
   return byte(retInt)
 }
 
-func Byte_to_hex(){
-  
+func ByteToHex(inByte byte) string {
+
+  var lowHalf = inByte & 0x0f
+  var upperHalf = (inByte & 0xf0) >> 4
+
+  var table = []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'}
+
+  return string([]byte{table[upperHalf], table[lowHalf]})
+
+}
+
+func BytesToHex(byteArr []byte) string {
+
+  var retHexStr string
+
+  for count := 0; count < len(byteArr); count++ {
+    retHexStr += ByteToHex(byteArr[count])
+  }
+
+  return retHexStr
+
+}
+
+func BytesXor(byteArr []byte, xorArr []byte) []byte {
+
+  var retXorBytes []byte
+
+  for count := 0; count < len(byteArr); count++ {
+    retXorBytes = append(retXorBytes, byteArr[count] ^ xorArr[count % (len(xorArr))])
+  }
+
+  return retXorBytes
+
 }

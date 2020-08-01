@@ -2,7 +2,6 @@ package challenges
 
 import (
   "fmt"
-
   "cryptopals/cryptofunctions"
 )
 
@@ -13,6 +12,10 @@ func Challenge1Set1(){
 
 }
 
-func Challeng1Set2(){
+func Challenge1Set2(){
 
+  var byteArr = cryptofunctions.HexToBytes("1c0111001f010100061a024b53535009181c")
+  var xorArr = cryptofunctions.HexToBytes("686974207468652062756c6c277320657965")
+  var xoredArr = cryptofunctions.BytesXor(byteArr, xorArr)
+  fmt.Println("Xored Bytes: ",cryptofunctions.BytesToHex(xoredArr))
 }

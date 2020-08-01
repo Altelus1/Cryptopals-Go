@@ -7,4 +7,5 @@ import (
 func main(){
 
   challenges.Challenge1Set1()
+  challenges.Challenge1Set2()
 }
